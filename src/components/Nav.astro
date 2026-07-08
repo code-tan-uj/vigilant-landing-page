@@ -8,10 +8,37 @@ import logo from '../assets/vigilantlabslogo.png';
      a plain frosted blur is enough for a small floating chat panel, but the
      primary nav is the one persistent chrome element worth the extra detail. -->
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
-  <filter id="nav-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="nav-glass-distortion" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="2" seed="7" result="noise" />
     <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="16" xChannelSelector="R" yChannelSelector="G" />
+
+    <!-- Real glass bends red/green/blue light by different amounts
+         (dispersion) — each channel gets its own displacement scale here,
+         then they're screen-blended back together so the edges show a
+         faint chromatic fringe instead of a flat, uniform blur. -->
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="22" xChannelSelector="R" yChannelSelector="G" result="dispR" />
+    <feColorMatrix in="dispR" type="matrix"
+      values="1 0 0 0 0
+              0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 1 0" result="chR" />
+
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="15" xChannelSelector="R" yChannelSelector="G" result="dispG" />
+    <feColorMatrix in="dispG" type="matrix"
+      values="0 0 0 0 0
+              0 1 0 0 0
+              0 0 0 0 0
+              0 0 0 1 0" result="chG" />
+
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="9" xChannelSelector="R" yChannelSelector="G" result="dispB" />
+    <feColorMatrix in="dispB" type="matrix"
+      values="0 0 0 0 0
+              0 0 0 0 0
+              0 0 1 0 0
+              0 0 0 1 0" result="chB" />
+
+    <feBlend in="chR" in2="chG" mode="screen" result="rg" />
+    <feBlend in="rg" in2="chB" mode="screen" />
   </filter>
 </svg>
 
@@ -65,6 +92,31 @@ import logo from '../assets/vigilantlabslogo.png';
      edges instead of just blurring it. */
   .nav-glass {
     backdrop-filter: url('#nav-glass-distortion') blur(10px) saturate(190%) brightness(1.06);
+  }
+
+  /* Thin iridescent rim on top of the solid border — a subtle, low-opacity
+     hue sweep around the edge standing in for the way a real lens/prism's
+     edge splits light differently at each point around its curve. Built
+     with the padding + mask-composite:exclude trick so only a 1px ring of
+     the gradient shows, not a filled shape. */
+  .nav-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from 180deg at 50% 50%,
+      rgba(255, 120, 120, 0.22) 0deg,
+      rgba(255, 255, 255, 0.04) 55deg,
+      rgba(130, 190, 255, 0.22) 130deg,
+      rgba(255, 255, 255, 0.04) 200deg,
+      rgba(170, 255, 210, 0.18) 280deg,
+      rgba(255, 120, 120, 0.22) 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.85;
   }
 
   .nav-glass.scrolled {
