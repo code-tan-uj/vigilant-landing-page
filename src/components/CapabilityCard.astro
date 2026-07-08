@@ -1,0 +1,25 @@
+---
+interface Props {
+  number: string;
+  icon: string;
+  title: string;
+  description: string;
+  delay?: string;
+}
+
+const { number, icon, title, description, delay = '' } = Astro.props;
+const revealClass = delay ? `reveal ${delay}` : 'reveal';
+---
+
+<div class={revealClass}>
+  <div class="cap-number">{number}</div>
+  <svg class="cap-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+    <Fragment set:html={icon} />
+  </svg>
+  <div class="cap-title">{title}</div>
+  <p class="cap-desc">{description}</p>
+</div>
+
+<style is:global>
+  /* Card styling handled in global.css */
+</style>
