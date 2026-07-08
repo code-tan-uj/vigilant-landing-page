@@ -6,31 +6,49 @@ import { markdownToHtml } from '../utils/markdown';
 import fs from 'fs';
 import path from 'path';
 
-const title = 'Privacy Policy — Vigilant Labs | Data Protection & DPDP Compliance';
-const description = 'Comprehensive Privacy Policy for CrowdSense™ platform. Compliant with India DPDP Act 2023, Factories Act 1948, and FSSAI regulations.';
+const title = 'Privacy Policy — Vigilant Labs | DPDP Act 2023 Compliance';
+const description = 'How Vigilant Labs collects, processes, and protects data on the CrowdSense™ platform. Compliant with India\'s DPDP Act 2023, Factories Act 1948, and FSSAI regulations.';
 
-// Read the privacy policy markdown file
 const privacyPath = path.join(process.cwd(), 'src/content/privacy-policy.md');
-let privacyContent = '';
-try {
-  const rawContent = fs.readFileSync(privacyPath, 'utf-8');
-  privacyContent = markdownToHtml(rawContent);
-} catch (error) {
-  privacyContent = '<h2>Privacy Policy</h2><p>The full privacy policy content is being loaded...</p>';
-}
+const rawContent = fs.readFileSync(privacyPath, 'utf-8');
+const { html: privacyContent, toc } = markdownToHtml(rawContent);
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://vigilantlabs.in/" },
+    { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://vigilantlabs.in/privacy" }
+  ]
+};
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <Nav />
 
   <section class="legal-section">
     <div class="legal-container">
       <div class="legal-header">
+        <p class="legal-eyebrow reveal">Legal &amp; Compliance</p>
         <h1 class="section-title reveal">Privacy <em>Policy</em></h1>
-        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026 | Compliant with India DPDP Act 2023</p>
+        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026 · Compliant with India's DPDP Act 2023</p>
       </div>
 
-      <div class="legal-content" set:html={privacyContent} />
+      <div class="legal-body">
+        <aside class="legal-toc reveal reveal-delay-1">
+          <span class="legal-toc-label">On this page</span>
+          <nav aria-label="Table of contents">
+            <ul>
+              {toc.filter(h => h.level === 2).map(h => (
+                <li><a href={`#${h.id}`}>{h.text}</a></li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        <div class="legal-content" set:html={privacyContent} />
+      </div>
     </div>
   </section>
 
@@ -40,19 +58,29 @@ try {
 <style is:global>
   .legal-section {
     background: var(--dark);
-    padding: 120px 48px;
+    padding: 120px 48px 160px;
     min-height: 100vh;
-    margin-top: 64px;
+    margin-top: 96px;
   }
 
   .legal-container {
-    max-width: 1000px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
   }
 
+  .legal-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
   .legal-header {
-    margin-bottom: 80px;
+    margin-bottom: 64px;
+    max-width: 800px;
   }
 
   .legal-updated {
@@ -61,134 +89,176 @@ try {
     margin-top: 16px;
   }
 
+  .legal-body {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 112px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    padding: 24px;
+  }
+
+  .legal-toc-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+
+  .legal-toc ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .legal-toc a {
+    font-size: 12.5px;
+    color: var(--muted);
+    text-decoration: none;
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+
+  .legal-toc a:hover {
+    color: var(--white);
+  }
+
   .legal-content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
+    max-width: 760px;
   }
 
-  .legal-content h1 {
-    display: none;
-  }
+  .legal-content h1 { display: none; }
 
   .legal-content h2 {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 30px;
     color: var(--white);
-    margin-top: 48px;
-    margin-bottom: 24px;
-    letter-spacing: 0.04em;
+    margin-top: 44px;
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+    scroll-margin-top: 112px;
   }
 
-  .legal-content h2:first-child {
-    margin-top: 0;
-  }
+  .legal-content h2:first-of-type { margin-top: 0; }
 
   .legal-content h3 {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 19px;
     color: var(--light);
-    margin-top: 32px;
-    margin-bottom: 16px;
+    margin-top: 28px;
+    margin-bottom: 4px;
     letter-spacing: 0.02em;
+    scroll-margin-top: 112px;
   }
 
   .legal-content p {
-    font-size: 14px;
+    font-size: 14.5px;
     color: var(--muted);
     line-height: 1.8;
+  }
+
+  .legal-content ul,
+  .legal-content ol {
+    margin: 4px 0 4px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .legal-content li {
-    font-size: 14px;
+    font-size: 14.5px;
     color: var(--muted);
-    line-height: 1.8;
-    margin-left: 20px;
+    line-height: 1.75;
   }
 
-  .legal-content ul {
-    margin: 16px 0;
+  .legal-content ol { list-style: decimal; }
+  .legal-content ul { list-style: disc; }
+
+  .legal-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  .legal-content .table-wrap {
+    overflow-x: auto;
+    margin: 12px 0;
+    border: 1px solid var(--border);
   }
 
   .legal-content table {
     width: 100%;
     border-collapse: collapse;
-    margin: 24px 0;
-    border: 1px solid var(--border);
-    overflow-x: auto;
+    min-width: 480px;
   }
 
-  .legal-content table td {
-    padding: 14px;
+  .legal-content table td,
+  .legal-content table th {
+    padding: 12px 14px;
     border: 1px solid var(--border);
     font-size: 13px;
     color: var(--muted);
+    text-align: left;
   }
 
-  .legal-content table tr:first-child td {
+  .legal-content table th {
     background: var(--panel);
     color: var(--white);
     font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.02em;
   }
 
   .legal-content a {
     color: var(--silver);
     text-decoration: underline;
+    text-underline-offset: 2px;
     transition: color 0.2s;
   }
 
-  .legal-content a:hover {
-    color: var(--white);
-  }
+  .legal-content a:hover { color: var(--white); }
 
-  .legal-content strong {
-    color: var(--white);
-    font-weight: 600;
-  }
+  .legal-content strong { color: var(--white); font-weight: 600; }
 
   .legal-content code {
     background: var(--panel);
     color: var(--silver);
-    padding: 4px 8px;
+    padding: 3px 7px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 12.5px;
     font-family: var(--font-mono);
   }
 
-  .legal-content pre {
-    background: var(--panel);
-    color: var(--silver);
-    padding: 16px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 16px 0;
+  @media (max-width: 1000px) {
+    .legal-body {
+      grid-template-columns: 1fr;
+    }
+
+    .legal-toc {
+      position: static;
+    }
   }
 
-  .legal-content pre code {
-    background: none;
-    padding: 0;
-  }
-
-  @media(max-width:900px){
-    .legal-section{
-      padding: 80px 24px;
-      margin-top: 64px;
+  @media (max-width: 900px) {
+    .legal-section {
+      padding: 80px 24px 100px;
+      margin-top: 96px;
     }
 
-    .legal-content h2 {
-      font-size: 22px;
-    }
-
-    .legal-content h3 {
-      font-size: 16px;
-    }
-
-    .legal-content table {
-      font-size: 12px;
-    }
-
-    .legal-content table td {
-      padding: 10px;
-    }
+    .legal-content h2 { font-size: 22px; }
+    .legal-content h3 { font-size: 16px; }
   }
 </style>

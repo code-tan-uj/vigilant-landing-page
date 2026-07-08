@@ -4,180 +4,65 @@ import logo from '../assets/vigilantlabslogo.png';
 ---
 
 <nav id="nav" class="nav-glass">
-  <div class="nav-container">
-    <a href="/" class="nav-logo">
-      <div class="nav-logo-mark">
-        <Image src={logo} alt="Vigilant Labs" width={28} height={28} />
-        <div class="logo-scan"></div>
-      </div>
-      <span class="nav-logo-text">VIGILANT LABS</span>
-    </a>
-
-    <div class="nav-center">
-      <ul class="nav-links">
-        <li><a href="/#capabilities">Platform</a></li>
-        <li><a href="/#usecases">Use Cases</a></li>
-        <li><a href="/#how">How It Works</a></li>
-        <li><a href="/about">About</a></li>
-      </ul>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">
+      <Image src={logo} alt="Vigilant Labs" width={28} height={28} />
+      <div class="logo-scan"></div>
     </div>
-
-    <div class="nav-right">
-      <a href="/contact" class="nav-contact">Contact Us</a>
-      <a href="/#cta" class="nav-cta">Request Demo →</a>
-    </div>
-  </div>
+    <span class="nav-logo-text">VIGILANT LABS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#capabilities">Platform</a></li>
+    <li><a href="/#usecases">Use Cases</a></li>
+    <li><a href="/#how">How It Works</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <a href="/#cta" class="nav-cta">Request Demo →</a>
 </nav>
 
 <style>
+  /* Liquid glass floating pill — same 3-child flex layout as base nav in
+     global.css (logo / links / cta), just restyled as an inset, rounded,
+     frosted-glass bar instead of an edge-to-edge opaque one. */
   .nav-glass {
-    position: fixed;
     top: 16px;
     left: 16px;
     right: 16px;
-    z-index: 100;
-    height: 56px;
-    border-radius: 9999px;
-    background: rgba(15, 15, 15, 0.4);
-    backdrop-filter: blur(10px) saturate(180%);
+    height: 64px;
+    border-radius: 999px;
+    padding: 0 12px 0 28px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%),
+      rgba(18, 18, 18, 0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
   }
 
-  .nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    height: 100%;
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+  .nav-glass.scrolled {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%),
+      rgba(12, 12, 12, 0.75);
+    border-color: rgba(255, 255, 255, 0.16);
   }
 
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    flex-shrink: 0;
-    transition: opacity 0.3s;
-  }
-
-  .nav-logo:hover {
-    opacity: 0.8;
-  }
-
-  .nav-logo-mark {
-    width: 28px;
-    height: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .nav-logo-mark img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .nav-logo-text {
-    font-family: var(--font-display);
-    font-size: 14px;
-    letter-spacing: 0.12em;
-    color: var(--white);
-  }
-
-  .nav-center {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: all 0.3s;
-  }
-
-  .nav-links a:hover {
-    color: var(--white);
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  .nav-contact {
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: all 0.3s;
-  }
-
-  .nav-contact:hover {
-    color: var(--white);
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .nav-cta {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--black);
-    background: var(--white);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.3s;
-    white-space: nowrap;
-  }
-
-  .nav-cta:hover {
-    background: var(--silver);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  .nav-glass .nav-cta {
+    margin-left: 4px;
+    border-radius: 999px;
+    padding: 10px 22px;
   }
 
   @media (max-width: 900px) {
-    .nav-container {
-      padding: 0 20px;
-      gap: 20px;
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    .nav-contact {
-      display: none;
-    }
-
-    .nav-logo-text {
-      font-size: 12px;
+    .nav-glass {
+      left: 12px;
+      right: 12px;
+      padding: 0 10px 0 20px;
     }
   }
 </style>
