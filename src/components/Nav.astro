@@ -3,47 +3,69 @@ import { Image } from 'astro:assets';
 import logo from '../assets/vigilantlabslogo.png';
 ---
 
-<!-- Hidden SVG filter powering the nav's liquid-glass edge refraction.
-     Scoped to the nav only (not reused on the chat widget) per design call:
-     a plain frosted blur is enough for a small floating chat panel, but the
-     primary nav is the one persistent chrome element worth the extra detail. -->
-<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
-  <filter id="nav-glass-distortion" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-    <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="2" seed="7" result="noise" />
-    <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
+<!-- Vanilla-JS port of the shuding/liquid-glass displacement-map technique
+     (canvas-computed rounded-rect SDF -> SVG feImage -> per-channel
+     chromatic-aberration displacement, masked so only the edge band is
+     affected). No WebGL/three.js/React needed. Scoped to the nav only. -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <filter id="nav-glass-distortion" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
+    <feImage id="nav-glass-map" x="0" y="0" width="100%" height="100%" result="DISPLACEMENT_MAP" preserveAspectRatio="xMidYMid slice" />
 
-    <!-- Real glass bends red/green/blue light by different amounts
-         (dispersion) — each channel gets its own displacement scale here,
-         then they're screen-blended back together so the edges show a
-         faint chromatic fringe instead of a flat, uniform blur. -->
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="30" xChannelSelector="R" yChannelSelector="G" result="dispR" />
-    <feColorMatrix in="dispR" type="matrix"
+    <!-- The map's own brightness IS the edge signal: near-neutral gray
+         (0.5) through the flat interior, swinging toward black/white right
+         at the rounded-rect boundary. Turn that into a 0/1 mask. -->
+    <feColorMatrix in="DISPLACEMENT_MAP" type="matrix"
+      values="0.3 0.3 0.3 0 0
+              0.3 0.3 0.3 0 0
+              0.3 0.3 0.3 0 0
+              0 0 0 1 0" result="EDGE_INTENSITY" />
+    <feComponentTransfer in="EDGE_INTENSITY" result="EDGE_MASK">
+      <feFuncA type="discrete" tableValues="0 0.15 1" />
+    </feComponentTransfer>
+
+    <feOffset in="SourceGraphic" dx="0" dy="0" result="CENTER_ORIGINAL" />
+
+    <!-- Each color channel displaced by a different amount = dispersion. -->
+    <feDisplacementMap in="SourceGraphic" in2="DISPLACEMENT_MAP" scale="30" xChannelSelector="R" yChannelSelector="B" result="RED_DISPLACED" />
+    <feColorMatrix in="RED_DISPLACED" type="matrix"
       values="1 0 0 0 0
               0 0 0 0 0
               0 0 0 0 0
-              0 0 0 1 0" result="chR" />
+              0 0 0 1 0" result="RED_CHANNEL" />
 
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="20" xChannelSelector="R" yChannelSelector="G" result="dispG" />
-    <feColorMatrix in="dispG" type="matrix"
+    <feDisplacementMap in="SourceGraphic" in2="DISPLACEMENT_MAP" scale="25.5" xChannelSelector="R" yChannelSelector="B" result="GREEN_DISPLACED" />
+    <feColorMatrix in="GREEN_DISPLACED" type="matrix"
       values="0 0 0 0 0
               0 1 0 0 0
               0 0 0 0 0
-              0 0 0 1 0" result="chG" />
+              0 0 0 1 0" result="GREEN_CHANNEL" />
 
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="12" xChannelSelector="R" yChannelSelector="G" result="dispB" />
-    <feColorMatrix in="dispB" type="matrix"
+    <feDisplacementMap in="SourceGraphic" in2="DISPLACEMENT_MAP" scale="21" xChannelSelector="R" yChannelSelector="B" result="BLUE_DISPLACED" />
+    <feColorMatrix in="BLUE_DISPLACED" type="matrix"
       values="0 0 0 0 0
               0 0 0 0 0
               0 0 1 0 0
-              0 0 0 1 0" result="chB" />
+              0 0 0 1 0" result="BLUE_CHANNEL" />
 
-    <feBlend in="chR" in2="chG" mode="screen" result="rg" />
-    <feBlend in="rg" in2="chB" mode="screen" />
+    <feBlend in="GREEN_CHANNEL" in2="BLUE_CHANNEL" mode="screen" result="GB_COMBINED" />
+    <feBlend in="RED_CHANNEL" in2="GB_COMBINED" mode="screen" result="RGB_COMBINED" />
+    <feGaussianBlur in="RGB_COMBINED" stdDeviation="0.2" result="ABERRATED_BLURRED" />
+
+    <!-- Aberration only where the edge mask says so... -->
+    <feComposite in="ABERRATED_BLURRED" in2="EDGE_MASK" operator="in" result="EDGE_ABERRATION" />
+
+    <!-- ...and the untouched source everywhere else, so the body of the
+         bar stays perfectly flat/legible. -->
+    <feComponentTransfer in="EDGE_MASK" result="INVERTED_MASK">
+      <feFuncA type="table" tableValues="1 0" />
+    </feComponentTransfer>
+    <feComposite in="CENTER_ORIGINAL" in2="INVERTED_MASK" operator="in" result="CENTER_CLEAN" />
+
+    <feComposite in="EDGE_ABERRATION" in2="CENTER_CLEAN" operator="over" />
   </filter>
 </svg>
 
 <nav id="nav" class="nav-glass">
-  <div class="nav-glass-edge" aria-hidden="true"></div>
   <a href="/" class="nav-logo">
     <div class="nav-logo-mark">
       <Image src={logo} alt="Vigilant Labs" width={28} height={28} />
@@ -62,9 +84,6 @@ import logo from '../assets/vigilantlabslogo.png';
 </nav>
 
 <style>
-  /* Liquid glass floating bar — same 3-child flex layout as base nav in
-     global.css (logo / links / cta), restyled as an inset, softly-rounded
-     rectangular frosted-glass bar (not a full pill) with edge refraction. */
   .nav-glass {
     top: 16px;
     left: 16px;
@@ -75,12 +94,8 @@ import logo from '../assets/vigilantlabslogo.png';
     background:
       linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%),
       rgba(18, 18, 18, 0.22);
-    /* Body of the slab: plain blur only, no distortion, so content read
-       through the middle of the glass stays flat and legible — real glass
-       only bends light where it's thick/angled, i.e. at the bevel, not
-       through its flat face. */
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(170%);
+    backdrop-filter: blur(10px) saturate(170%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.3),
@@ -89,51 +104,11 @@ import logo from '../assets/vigilantlabslogo.png';
     transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
   }
 
-  /* The bevel: a masked frame-shaped layer sitting on top of the body,
-     covering only a band around the perimeter (padding + mask-composite:
-     exclude carves the ring). Its backdrop-filter carries the chromatic
-     displacement, so ONLY this band bends/disperses what's behind the nav —
-     the body underneath stays plain-blurred. That's what makes it read as
-     a glass slab with a refractive edge rather than one uniformly warped
-     surface. */
-  .nav-glass-edge {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 13px;
-    pointer-events: none;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    -webkit-backdrop-filter: blur(6px) saturate(220%) brightness(1.1);
-    backdrop-filter: blur(6px) saturate(220%) brightness(1.1);
-  }
-
-  .nav-glass-edge {
-    backdrop-filter: url('#nav-glass-distortion') blur(4px) saturate(230%) brightness(1.12);
-  }
-
-  /* Thin iridescent rim drawn on top of the bevel — a subtle, low-opacity
-     hue sweep standing in for the way a lens edge splits light differently
-     at each point around its curve. */
-  .nav-glass::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: conic-gradient(from 180deg at 50% 50%,
-      rgba(255, 120, 120, 0.18) 0deg,
-      rgba(255, 255, 255, 0.03) 55deg,
-      rgba(130, 190, 255, 0.18) 130deg,
-      rgba(255, 255, 255, 0.03) 200deg,
-      rgba(170, 255, 210, 0.14) 280deg,
-      rgba(255, 120, 120, 0.18) 360deg);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0.75;
+  /* Progressive enhancement: the SDF-driven displacement map above bends
+     only the edge band of whatever scrolls behind the nav, layered on top
+     of the plain blur fallback declared above. */
+  .nav-glass {
+    backdrop-filter: url('#nav-glass-distortion') blur(10px) saturate(170%) brightness(1.05);
   }
 
   .nav-glass.scrolled {
@@ -158,3 +133,31 @@ import logo from '../assets/vigilantlabslogo.png';
     }
   }
 </style>
+
+<script>
+  import { generateNavDisplacementMap } from '../scripts/liquid-glass';
+
+  function updateNavGlassMap() {
+    const nav = document.getElementById('nav');
+    const feImage = document.getElementById('nav-glass-map');
+    if (!nav || !feImage) return;
+
+    const rect = nav.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
+
+    const isMobile = window.innerWidth <= 900;
+    const url = generateNavDisplacementMap(rect.width, rect.height, {
+      edgeBandPx: 11,
+      radiusPx: isMobile ? 12 : 14,
+    });
+    feImage.setAttribute('href', url);
+  }
+
+  updateNavGlassMap();
+
+  let resizeTimer: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateNavGlassMap, 150);
+  });
+</script>
