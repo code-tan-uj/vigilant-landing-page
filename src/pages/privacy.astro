@@ -2,9 +2,21 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { Readable } from 'stream';
+import fs from 'fs';
+import path from 'path';
 
-const title = 'Privacy Policy — Vigilant Labs';
-const description = 'Privacy Policy for Vigilant Labs and CrowdSense™ platform. Learn how we protect your data.';
+const title = 'Privacy Policy — Vigilant Labs | Data Protection & DPDP Compliance';
+const description = 'Comprehensive Privacy Policy for CrowdSense™ platform. Compliant with India DPDP Act 2023, Factories Act 1948, and FSSAI regulations.';
+
+// Read the privacy policy markdown file
+const privacyPath = path.join(process.cwd(), 'src/content/privacy-policy.md');
+let privacyContent = '';
+try {
+  privacyContent = fs.readFileSync(privacyPath, 'utf-8');
+} catch (error) {
+  privacyContent = '## Privacy Policy\n\nThe full privacy policy content is being loaded...';
+}
 ---
 
 <BaseLayout title={title} description={description}>
@@ -14,50 +26,19 @@ const description = 'Privacy Policy for Vigilant Labs and CrowdSense™ platform
     <div class="legal-container">
       <div class="legal-header">
         <h1 class="section-title reveal">Privacy <em>Policy</em></h1>
-        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026</p>
+        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026 | Compliant with India DPDP Act 2023</p>
       </div>
 
-      <div class="legal-content">
-        <div class="legal-block reveal reveal-delay-2">
-          <h2 class="legal-subtitle">Overview</h2>
-          <p>Vigilant Labs ("we", "us", "our") operates the CrowdSense™ platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your information.</p>
-          <div class="legal-todo"><!-- TODO: Add complete Privacy Policy content per applicable laws --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Data Collected</h2>
-          <p>We collect information you provide directly, such as contact details when you request a demo, as well as usage data from the CrowdSense™ platform including video metadata, detections, and alerts.</p>
-          <div class="legal-todo"><!-- TODO: Specify data types and collection methods --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Cookies & Tracking</h2>
-          <p>Our platform may use cookies and similar technologies to enhance your experience. You can control cookie preferences in your browser settings.</p>
-          <div class="legal-todo"><!-- TODO: Detail cookie types and tracking technologies --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Third-Party Processors</h2>
-          <p>We use third-party services (Vercel for hosting, analytics platforms) that may process your data. All processors comply with applicable data protection standards.</p>
-          <div class="legal-todo"><!-- TODO: List all third-party processors and their privacy policies --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Data Retention</h2>
-          <p>We retain personal data only as long as necessary to fulfill the purposes for which it was collected, or as required by law.</p>
-          <div class="legal-todo"><!-- TODO: Specify retention periods per data type --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Your Rights</h2>
-          <p>You have the right to access, correct, or delete your personal data. Contact us at <a href="mailto:privacy@vigilantlabs.in">privacy@vigilantlabs.in</a> to exercise these rights.</p>
-          <div class="legal-todo"><!-- TODO: Detail user rights and procedures --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Contact</h2>
-          <p>If you have privacy concerns, contact us at: <a href="mailto:privacy@vigilantlabs.in">privacy@vigilantlabs.in</a></p>
-        </div>
+      <div class="legal-content markdown">
+        <div set:html={privacyContent.split('\n').map((line, i) => {
+          if (line.startsWith('# ')) return `<h1>${line.substring(2)}</h1>`;
+          if (line.startsWith('## ')) return `<h2>${line.substring(3)}</h2>`;
+          if (line.startsWith('### ')) return `<h3>${line.substring(4)}</h3>`;
+          if (line.startsWith('| ')) return `<table><tr>${line.split('|').slice(1, -1).map(cell => `<td>${cell.trim()}</td>`).join('')}</tr></table>`;
+          if (line.startsWith('- ')) return `<li>${line.substring(2)}</li>`;
+          if (line.trim() === '') return '<br/>';
+          return `<p>${line}</p>`;
+        }).join('')} />
       </div>
     </div>
   </section>
@@ -74,8 +55,9 @@ const description = 'Privacy Policy for Vigilant Labs and CrowdSense™ platform
   }
 
   .legal-container {
-    max-width: 900px;
+    max-width: 1000px;
     width: 100%;
+    margin: 0 auto;
   }
 
   .legal-header {
@@ -91,58 +73,93 @@ const description = 'Privacy Policy for Vigilant Labs and CrowdSense™ platform
   .legal-content {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
   }
 
-  .legal-block {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .legal-subtitle {
+  .legal-content h2 {
     font-family: var(--font-display);
-    font-size: 24px;
+    font-size: 28px;
     color: var(--white);
+    margin-top: 40px;
     margin-bottom: 16px;
     letter-spacing: 0.04em;
   }
 
-  .legal-block p {
+  .legal-content h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--light);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .legal-content p {
     font-size: 14px;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.8;
     margin-bottom: 12px;
   }
 
-  .legal-block a {
+  .legal-content li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-left: 20px;
+    margin-bottom: 8px;
+  }
+
+  .legal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+  }
+
+  .legal-content table td {
+    padding: 12px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .legal-content table tr:first-child td {
+    background: var(--panel);
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .legal-content a {
     color: var(--silver);
-    text-decoration: none;
+    text-decoration: underline;
     transition: color 0.2s;
   }
 
-  .legal-block a:hover {
+  .legal-content a:hover {
     color: var(--white);
   }
 
-  .legal-todo {
-    font-size: 12px;
-    color: var(--dim);
-    font-style: italic;
-    margin-top: 12px;
-    padding: 12px;
-    border-left: 2px solid var(--border);
-    background: rgba(68, 68, 68, 0.2);
+  .legal-content strong {
+    color: var(--white);
+    font-weight: 600;
   }
 
-  .legal-todo::before {
-    content: "⚠️ TODO: ";
-    color: var(--dim);
+  .legal-content code {
+    background: var(--panel);
+    color: var(--silver);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
   }
 
   @media(max-width:900px){
     .legal-section{
       padding:80px 24px;
       margin-top:64px;
+    }
+
+    .legal-content h2 {
+      font-size: 22px;
     }
   }
 </style>

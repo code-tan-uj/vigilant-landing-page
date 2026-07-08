@@ -2,9 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import fs from 'fs';
+import path from 'path';
 
-const title = 'Terms of Service — Vigilant Labs';
-const description = 'Terms of Service for Vigilant Labs and CrowdSense™ platform.';
+const title = 'Terms of Service — Vigilant Labs | Legal Agreement & Service Terms';
+const description = 'Complete Terms of Service for CrowdSense™ platform. Covers service description, liability, data responsibility, and India-specific legal compliance.';
+
+// Read the terms of service markdown file
+const termsPath = path.join(process.cwd(), 'src/content/terms-of-service.md');
+let termsContent = '';
+try {
+  termsContent = fs.readFileSync(termsPath, 'utf-8');
+} catch (error) {
+  termsContent = '## Terms of Service\n\nThe full terms of service content is being loaded...';
+}
 ---
 
 <BaseLayout title={title} description={description}>
@@ -14,50 +25,19 @@ const description = 'Terms of Service for Vigilant Labs and CrowdSense™ platfo
     <div class="legal-container">
       <div class="legal-header">
         <h1 class="section-title reveal">Terms of <em>Service</em></h1>
-        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026</p>
+        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026 | Governing Law: India (Maharashtra)</p>
       </div>
 
-      <div class="legal-content">
-        <div class="legal-block reveal reveal-delay-2">
-          <h2 class="legal-subtitle">Acceptance</h2>
-          <p>By accessing or using the CrowdSense™ platform, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use the platform.</p>
-          <div class="legal-todo"><!-- TODO: Add full acceptance terms and conditions --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Service Description</h2>
-          <p>CrowdSense™ is an AI-powered video analytics platform that connects to your existing CCTV infrastructure to provide real-time operational intelligence, including PPE compliance monitoring, fire/smoke detection, and SOP verification.</p>
-          <div class="legal-todo"><!-- TODO: Detail service features and limitations --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Limitations of Liability</h2>
-          <p>Vigilant Labs provides the CrowdSense™ platform "as is" without warranty. We are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use or inability to use the platform.</p>
-          <div class="legal-todo"><!-- TODO: Define warranty disclaimers and liability caps --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Intellectual Property & Trademarks</h2>
-          <p>CrowdSense™ is a trademark of Vigilant Labs. All content, software, and design elements are protected by intellectual property law. You may not reproduce, distribute, or modify any part of the platform without written permission.</p>
-          <div class="legal-todo"><!-- TODO: Add comprehensive IP and trademark policies --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Governing Law</h2>
-          <p>These Terms of Service are governed by and construed in accordance with the laws of India, specifically the state of Maharashtra, without regard to its conflict of law provisions.</p>
-          <div class="legal-todo"><!-- TODO: Specify jurisdiction and dispute resolution --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Changes to Terms</h2>
-          <p>Vigilant Labs reserves the right to modify these terms at any time. Continued use of the platform following any changes constitutes acceptance of the new terms.</p>
-          <div class="legal-todo"><!-- TODO: Detail change notification procedures --></div>
-        </div>
-
-        <div class="legal-block reveal reveal-delay-3">
-          <h2 class="legal-subtitle">Contact</h2>
-          <p>For questions or concerns regarding these terms, please contact us at: <a href="mailto:legal@vigilantlabs.in">legal@vigilantlabs.in</a></p>
-        </div>
+      <div class="legal-content markdown">
+        <div set:html={termsContent.split('\n').map((line, i) => {
+          if (line.startsWith('# ')) return `<h1>${line.substring(2)}</h1>`;
+          if (line.startsWith('## ')) return `<h2>${line.substring(3)}</h2>`;
+          if (line.startsWith('### ')) return `<h3>${line.substring(4)}</h3>`;
+          if (line.startsWith('| ')) return `<table><tr>${line.split('|').slice(1, -1).map(cell => `<td>${cell.trim()}</td>`).join('')}</tr></table>`;
+          if (line.startsWith('- ')) return `<li>${line.substring(2)}</li>`;
+          if (line.trim() === '') return '<br/>';
+          return `<p>${line}</p>`;
+        }).join('')} />
       </div>
     </div>
   </section>
@@ -74,8 +54,9 @@ const description = 'Terms of Service for Vigilant Labs and CrowdSense™ platfo
   }
 
   .legal-container {
-    max-width: 900px;
+    max-width: 1000px;
     width: 100%;
+    margin: 0 auto;
   }
 
   .legal-header {
@@ -91,58 +72,93 @@ const description = 'Terms of Service for Vigilant Labs and CrowdSense™ platfo
   .legal-content {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
   }
 
-  .legal-block {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .legal-subtitle {
+  .legal-content h2 {
     font-family: var(--font-display);
-    font-size: 24px;
+    font-size: 28px;
     color: var(--white);
+    margin-top: 40px;
     margin-bottom: 16px;
     letter-spacing: 0.04em;
   }
 
-  .legal-block p {
+  .legal-content h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--light);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .legal-content p {
     font-size: 14px;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.8;
     margin-bottom: 12px;
   }
 
-  .legal-block a {
+  .legal-content li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-left: 20px;
+    margin-bottom: 8px;
+  }
+
+  .legal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+  }
+
+  .legal-content table td {
+    padding: 12px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .legal-content table tr:first-child td {
+    background: var(--panel);
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .legal-content a {
     color: var(--silver);
-    text-decoration: none;
+    text-decoration: underline;
     transition: color 0.2s;
   }
 
-  .legal-block a:hover {
+  .legal-content a:hover {
     color: var(--white);
   }
 
-  .legal-todo {
-    font-size: 12px;
-    color: var(--dim);
-    font-style: italic;
-    margin-top: 12px;
-    padding: 12px;
-    border-left: 2px solid var(--border);
-    background: rgba(68, 68, 68, 0.2);
+  .legal-content strong {
+    color: var(--white);
+    font-weight: 600;
   }
 
-  .legal-todo::before {
-    content: "⚠️ TODO: ";
-    color: var(--dim);
+  .legal-content code {
+    background: var(--panel);
+    color: var(--silver);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
   }
 
   @media(max-width:900px){
     .legal-section{
       padding:80px 24px;
       margin-top:64px;
+    }
+
+    .legal-content h2 {
+      font-size: 22px;
     }
   }
 </style>

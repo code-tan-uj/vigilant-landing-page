@@ -1,5 +1,6 @@
 ---
 import SEO from '../components/SEO.astro';
+import ChatWidget from '../components/ChatWidget.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -59,6 +60,8 @@ const { title, description, image, type } = Astro.props;
   <div id="cursor-ring"></div>
 
   <slot />
+
+  <ChatWidget />
 
   <script src="../scripts/interactions.ts"></script>
 </body>
