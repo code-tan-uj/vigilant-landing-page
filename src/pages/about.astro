@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'About — Vigilant Labs';
+const description = 'Learn how Vigilant Labs transforms existing CCTV infrastructure into AI-powered operational intelligence for India\'s industries.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+
+  <section style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 48px' }}>
+    <div style={{ marginBottom: '60px' }}>
+      <div class="section-eyebrow reveal" style={{ marginBottom: '24px' }}>About Us</div>
+      <h1 class="section-title reveal" style={{ fontSize: 'clamp(48px, 7vw, 100px)', marginBottom: '32px' }}>
+        Turning CCTV <br /> Into <em>Intelligence</em>
+      </h1>
+    </div>
+
+    <div style={{ maxWidth: '700px', lineHeight: '1.8' }}>
+      <p style={{ fontSize: '16px', marginBottom: '24px', color: 'var(--silver)' }}>
+        Vigilant Labs reimagines CCTV infrastructure as a proactive intelligence layer. Every organization invests in surveillance — cameras are already everywhere. We unlock that existing capital by layering real-time AI analysis on top, turning passive recording into actionable operational intelligence.
+      </p>
+
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', marginBottom: '16px', color: 'var(--white)', letterSpacing: '.04em' }}>
+        Why India. Why Now.
+      </h2>
+      <p style={{ fontSize: '15px', marginBottom: '24px', color: 'var(--muted)', lineHeight: '1.7' }}>
+        India's manufacturing belt is compliance-heavy. The Factories Act 1948, OSHWC Code 2020, ISO 22000, and FSSAI regulations demand evidence-based audits. Traditional manual monitoring doesn't scale across multi-site operations. CCTV adoption is near-universal in food manufacturing, pharma, and logistics — yet most footage goes unwatched. We bridge this gap with edge-first, privacy-first AI that works with existing infrastructure.
+      </p>
+
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', marginBottom: '16px', color: 'var(--white)', letterSpacing: '.04em' }}>
+        Founded by Engineers Who Know
+      </h2>
+      <p style={{ fontSize: '15px', marginBottom: '24px', color: 'var(--muted)', lineHeight: '1.7' }}>
+        Our team comes from leading computer vision companies. We've shipped video analysis systems at scale. We understand the gap between research and production — between promising accuracy in a lab and reliable performance in a factory.
+      </p>
+
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', marginBottom: '16px', color: 'var(--white)', letterSpacing: '.04em' }}>
+        Compliance Baked In
+      </h2>
+      <p style={{ fontSize: '15px', marginBottom: '24px', color: 'var(--muted)', lineHeight: '1.7' }}>
+        Our platform is audit-ready: Factories Act 1948, OSHWC Code 2020, ISO 22000, FSSAI. Every detection generates timestamped evidence — clips, snapshots, KPIs — exportable as PDFs for regulatory review. No guesswork. No manual log entries.
+      </p>
+
+      <div style={{ marginTop: '60px', paddingTop: '40px', borderTop: '1px solid var(--border)' }}>
+        <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '20px' }}>
+          Ready to see what CrowdSense™ can do for your operations?
+        </p>
+        <a href="/contact" style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '.08em', background: 'var(--white)', color: 'var(--black)', border: 'none', padding: '14px 32px', cursor: 'none', textDecoration: 'none', display: 'inline-block', transition: 'background .2s,transform .2s' }}>
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style define:vars={{}}>
+  section {
+    background: var(--dark);
+  }
+</style>

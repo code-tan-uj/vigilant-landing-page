@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const title = '404 — Page Not Found';
+const description = 'The page you are looking for could not be found.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+
+  <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 48px', textAlign: 'center' }}>
+    <div style={{ maxWidth: '600px' }}>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(120px, 25vw, 280px)', lineHeight: '.9', color: 'var(--border)', letterSpacing: '-.01em', marginBottom: '20px' }}>
+        404
+      </h1>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 6vw, 80px)', color: 'var(--white)', marginBottom: '20px', letterSpacing: '.04em' }}>
+        Page Not Found
+      </h2>
+      <p style={{ fontSize: '16px', color: 'var(--silver)', marginBottom: '40px', lineHeight: '1.6' }}>
+        The page you're looking for doesn't exist. It may have been moved or removed.
+      </p>
+      <a href="/" style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '.08em', background: 'var(--white)', color: 'var(--black)', border: 'none', padding: '14px 32px', cursor: 'none', textDecoration: 'none', display: 'inline-block', transition: 'background .2s,transform .2s' }}>
+        Back to Home
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style define:vars={{}}>
+  section {
+    background: var(--dark);
+  }
+</style>

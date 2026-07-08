@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Privacy Policy — Vigilant Labs';
+const description = 'Privacy Policy for Vigilant Labs and CrowdSense™ platform.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+
+  <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', padding: '120px 48px' }}>
+    <div style={{ maxWidth: '900px', width: '100%' }}>
+      <div style={{ marginBottom: '60px' }}>
+        <h1 class="section-title reveal" style={{ fontSize: 'clamp(48px, 7vw, 100px)', marginBottom: '24px' }}>
+          Privacy <em>Policy</em>
+        </h1>
+        <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: '1.7' }}>
+          Last updated: 2026. Read our full privacy policy below.
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Overview
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            Vigilant Labs ("we", "us", "our") operates the CrowdSense™ platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your information.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Data Collected
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            We collect information you provide directly, such as contact details when you request a demo, as well as usage data from the CrowdSense™ platform.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Cookies & Tracking
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            Our platform may use cookies and similar technologies to enhance your experience. You can control cookie preferences in your browser settings.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Third-Party Processors
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            We may share data with trusted third-party service providers who assist in operating our website and conducting our business, subject to strict confidentiality agreements.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Data Retention
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            We retain your personal data for as long as necessary to provide our services and fulfill legal obligations. You may request deletion at any time.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Your Rights
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            Depending on your location, you may have the right to access, correct, or delete your personal data. Contact us to exercise these rights.
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+
+        <div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
+            Contact
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
+            For privacy inquiries, contact <a href="mailto:info@vigilantlabs.in" style={{ color: 'var(--silver)', textDecoration: 'none' }}>info@vigilantlabs.in</a>
+          </p>
+          {/* TODO: Add actual Privacy Policy content */}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style define:vars={{}}>
+  section {
+    background: var(--dark);
+  }
+</style>

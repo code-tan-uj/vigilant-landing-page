@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Ticker from '../components/Ticker.astro';
+import CapabilitiesGrid from '../components/CapabilitiesGrid.astro';
+import NumbersStrip from '../components/NumbersStrip.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import UseCases from '../components/UseCases.astro';
+import DeploymentOptions from '../components/DeploymentOptions.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Vigilant Labs — AI CCTV Analytics India';
+const description = 'Turn your existing CCTV into real-time operational intelligence. Zero new hardware. Live in 10 days. PPE compliance, fire detection, SOP monitoring.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+  <Hero />
+  <Ticker />
+  <CapabilitiesGrid />
+  <NumbersStrip />
+  <HowItWorks />
+  <UseCases />
+  <DeploymentOptions />
+  <CtaBanner />
+  <Footer />
+</BaseLayout>

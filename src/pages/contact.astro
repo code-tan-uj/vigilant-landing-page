@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Contact — Vigilant Labs';
+const description = 'Get in touch with Vigilant Labs. Request a demo, ask questions, or learn how CrowdSense™ can transform your operations.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+
+  <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 48px' }}>
+    <div style={{ maxWidth: '1000px', width: '100%' }}>
+      <div style={{ marginBottom: '80px' }}>
+        <div class="section-eyebrow reveal" style={{ marginBottom: '24px' }}>Contact</div>
+        <h1 class="section-title reveal" style={{ fontSize: 'clamp(48px, 7vw, 100px)', marginBottom: '32px' }}>
+          Get In <em>Touch</em>
+        </h1>
+        <p style={{ fontSize: '18px', color: 'var(--silver)', maxWidth: '600px', lineHeight: '1.7' }}>
+          Ready to see CrowdSense™ in action? Reach out to our team. We'll schedule a live demo on your cameras within 48 hours.
+        </p>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '60px', marginBottom: '80px' }}>
+        <div>
+          <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '.18em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '16px' }}>
+            Email
+          </h3>
+          <a href="mailto:info@vigilantlabs.in" style={{ fontSize: '18px', fontWeight: '400', color: 'var(--silver)', textDecoration: 'none', transition: 'color .2s', display: 'inline-block' }}>
+            info@vigilantlabs.in
+          </a>
+          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '8px', lineHeight: '1.6' }}>
+            Fastest response. PoC setup, licensing, technical questions.
+          </p>
+        </div>
+
+        <div>
+          <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '.18em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '16px' }}>
+            Phone
+          </h3>
+          <a href="tel:+919574332221" style={{ fontSize: '18px', fontWeight: '400', color: 'var(--silver)', textDecoration: 'none', transition: 'color .2s', display: 'inline-block' }}>
+            +91 95743 32221
+          </a>
+          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '8px', lineHeight: '1.6' }}>
+            Call for urgent PoCs or multi-site deployments.
+          </p>
+        </div>
+
+        <div>
+          <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '.18em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '16px' }}>
+            Location
+          </h3>
+          <p style={{ fontSize: '18px', fontWeight: '400', color: 'var(--silver)', marginBottom: '8px' }}>
+            Pune, Maharashtra
+          </p>
+          <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: '1.6' }}>
+            India
+          </p>
+        </div>
+      </div>
+
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '60px' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--white)', marginBottom: '20px', letterSpacing: '.04em' }}>
+          What Happens Next
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--white)', marginBottom: '8px' }}>
+              01. Initial Call
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: '1.7' }}>
+              20-min discovery. Your camera setup, compliance requirements, key use cases. No pressure.
+            </p>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--white)', marginBottom: '8px' }}>
+              02. Live Demo
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: '1.7' }}>
+              Our team connects to your CCTV, trains the AI model, shows real-time detections within 48 hours.
+            </p>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--white)', marginBottom: '8px' }}>
+              03. Custom Proposal
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: '1.7' }}>
+              Deployment plan, pricing, onboarding timeline tailored to your site.
+            </p>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--white)', marginBottom: '8px' }}>
+              04. Go Live
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: '1.7' }}>
+              Full setup, staff training, 24/7 support. Compliance dashboard live on day 1.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style define:vars={{}}>
+  section {
+    background: var(--dark);
+  }
+</style>
