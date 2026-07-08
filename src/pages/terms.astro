@@ -4,92 +4,59 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 const title = 'Terms of Service — Vigilant Labs';
-const description = 'Terms of Service for the CrowdSense™ platform and Vigilant Labs services.';
+const description = 'Terms of Service for Vigilant Labs and CrowdSense™ platform.';
 ---
 
 <BaseLayout title={title} description={description}>
   <Nav />
 
-  <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', padding: '120px 48px' }}>
-    <div style={{ maxWidth: '900px', width: '100%' }}>
-      <div style={{ marginBottom: '60px' }}>
-        <h1 class="section-title reveal" style={{ fontSize: 'clamp(48px, 7vw, 100px)', marginBottom: '24px' }}>
-          Terms of <em>Service</em>
-        </h1>
-        <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: '1.7' }}>
-          Last updated: 2026. By using CrowdSense™, you agree to these terms.
-        </p>
+  <section class="legal-section">
+    <div class="legal-container">
+      <div class="legal-header">
+        <h1 class="section-title reveal">Terms of <em>Service</em></h1>
+        <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026</p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Acceptance of Terms
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            By accessing and using CrowdSense™, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+      <div class="legal-content">
+        <div class="legal-block reveal reveal-delay-2">
+          <h2 class="legal-subtitle">Acceptance</h2>
+          <p>By accessing or using the CrowdSense™ platform, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use the platform.</p>
+          <div class="legal-todo"><!-- TODO: Add full acceptance terms and conditions --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Service Description
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            CrowdSense™ is an AI-powered surveillance analytics platform designed to process CCTV feeds and provide real-time operational intelligence, compliance reporting, and alerts across multiple use cases including PPE monitoring, SOP compliance, fire detection, and more.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Service Description</h2>
+          <p>CrowdSense™ is an AI-powered video analytics platform that connects to your existing CCTV infrastructure to provide real-time operational intelligence, including PPE compliance monitoring, fire/smoke detection, and SOP verification.</p>
+          <div class="legal-todo"><!-- TODO: Detail service features and limitations --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Limitations of Liability
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            Vigilant Labs shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including lost profits or revenue, even if advised of the possibility of such damages.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Limitations of Liability</h2>
+          <p>Vigilant Labs provides the CrowdSense™ platform "as is" without warranty. We are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use or inability to use the platform.</p>
+          <div class="legal-todo"><!-- TODO: Define warranty disclaimers and liability caps --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Intellectual Property & Trademarks
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            All content, features, and functionality of CrowdSense™ are owned by Vigilant Labs, its licensors, or other providers of such material. "CrowdSense" and related marks are trademarks of Vigilant Labs.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Intellectual Property & Trademarks</h2>
+          <p>CrowdSense™ is a trademark of Vigilant Labs. All content, software, and design elements are protected by intellectual property law. You may not reproduce, distribute, or modify any part of the platform without written permission.</p>
+          <div class="legal-todo"><!-- TODO: Add comprehensive IP and trademark policies --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Governing Law
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            These terms are governed by and construed in accordance with the laws of India, and you irrevocably submit to the exclusive jurisdiction of the courts located in Pune, Maharashtra.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Governing Law</h2>
+          <p>These Terms of Service are governed by and construed in accordance with the laws of India, specifically the state of Maharashtra, without regard to its conflict of law provisions.</p>
+          <div class="legal-todo"><!-- TODO: Specify jurisdiction and dispute resolution --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Changes to Terms
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            Vigilant Labs may revise these terms at any time without notice. By using CrowdSense™, you agree to be bound by the current version of these terms.
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Changes to Terms</h2>
+          <p>Vigilant Labs reserves the right to modify these terms at any time. Continued use of the platform following any changes constitutes acceptance of the new terms.</p>
+          <div class="legal-todo"><!-- TODO: Detail change notification procedures --></div>
         </div>
 
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--white)', marginBottom: '16px', letterSpacing: '.04em' }}>
-            Contact
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: '1.7' }}>
-            For questions about these terms, please contact <a href="mailto:info@vigilantlabs.in" style={{ color: 'var(--silver)', textDecoration: 'none' }}>info@vigilantlabs.in</a>
-          </p>
-          {/* TODO: Add actual Terms of Service content */}
+        <div class="legal-block reveal reveal-delay-3">
+          <h2 class="legal-subtitle">Contact</h2>
+          <p>For questions or concerns regarding these terms, please contact us at: <a href="mailto:legal@vigilantlabs.in">legal@vigilantlabs.in</a></p>
         </div>
       </div>
     </div>
@@ -98,8 +65,84 @@ const description = 'Terms of Service for the CrowdSense™ platform and Vigilan
   <Footer />
 </BaseLayout>
 
-<style define:vars={{}}>
-  section {
+<style is:global>
+  .legal-section {
     background: var(--dark);
+    padding: 120px 48px;
+    min-height: 100vh;
+    margin-top: 64px;
+  }
+
+  .legal-container {
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .legal-header {
+    margin-bottom: 80px;
+  }
+
+  .legal-updated {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  .legal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .legal-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .legal-subtitle {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .legal-block p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .legal-block a {
+    color: var(--silver);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .legal-block a:hover {
+    color: var(--white);
+  }
+
+  .legal-todo {
+    font-size: 12px;
+    color: var(--dim);
+    font-style: italic;
+    margin-top: 12px;
+    padding: 12px;
+    border-left: 2px solid var(--border);
+    background: rgba(68, 68, 68, 0.2);
+  }
+
+  .legal-todo::before {
+    content: "⚠️ TODO: ";
+    color: var(--dim);
+  }
+
+  @media(max-width:900px){
+    .legal-section{
+      padding:80px 24px;
+      margin-top:64px;
+    }
   }
 </style>

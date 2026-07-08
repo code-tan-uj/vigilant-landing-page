@@ -11,7 +11,7 @@ const { number, icon, title, description, delay = '' } = Astro.props;
 const revealClass = delay ? `reveal ${delay}` : 'reveal';
 ---
 
-<div class={revealClass}>
+<div class={`cap-card ${revealClass}`}>
   <div class="cap-number">{number}</div>
   <svg class="cap-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
     <Fragment set:html={icon} />
