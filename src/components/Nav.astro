@@ -3,6 +3,18 @@ import { Image } from 'astro:assets';
 import logo from '../assets/vigilantlabslogo.png';
 ---
 
+<!-- Hidden SVG filter powering the nav's liquid-glass edge refraction.
+     Scoped to the nav only (not reused on the chat widget) per design call:
+     a plain frosted blur is enough for a small floating chat panel, but the
+     primary nav is the one persistent chrome element worth the extra detail. -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <filter id="nav-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="2" seed="7" result="noise" />
+    <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="16" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
 <nav id="nav" class="nav-glass">
   <a href="/" class="nav-logo">
     <div class="nav-logo-mark">
@@ -22,39 +34,49 @@ import logo from '../assets/vigilantlabslogo.png';
 </nav>
 
 <style>
-  /* Liquid glass floating pill — same 3-child flex layout as base nav in
-     global.css (logo / links / cta), just restyled as an inset, rounded,
-     frosted-glass bar instead of an edge-to-edge opaque one. */
+  /* Liquid glass floating bar — same 3-child flex layout as base nav in
+     global.css (logo / links / cta), restyled as an inset, softly-rounded
+     rectangular frosted-glass bar (not a full pill) with edge refraction. */
   .nav-glass {
     top: 16px;
     left: 16px;
     right: 16px;
     height: 64px;
-    border-radius: 999px;
-    padding: 0 12px 0 28px;
+    border-radius: 22px;
+    padding: 0 20px 0 28px;
     background:
       linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%),
-      rgba(18, 18, 18, 0.55);
-    backdrop-filter: blur(20px) saturate(180%);
+      rgba(18, 18, 18, 0.5);
+    /* Fallback for browsers without SVG-filter-in-backdrop-filter support
+       (declared first so the cascade keeps it if the enhanced rule below is
+       judged invalid/unsupported). */
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
       inset 0 -1px 0 rgba(0, 0, 0, 0.25);
     transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+
+  /* Progressive enhancement: real liquid-glass refraction via SVG
+     feDisplacementMap, bending/distorting whatever scrolls beneath the nav
+     edges instead of just blurring it. */
+  .nav-glass {
+    backdrop-filter: url('#nav-glass-distortion') blur(10px) saturate(190%) brightness(1.06);
   }
 
   .nav-glass.scrolled {
     background:
       linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%),
-      rgba(12, 12, 12, 0.75);
-    border-color: rgba(255, 255, 255, 0.16);
+      rgba(12, 12, 12, 0.7);
+    border-color: rgba(255, 255, 255, 0.18);
   }
 
   .nav-glass .nav-cta {
     margin-left: 4px;
-    border-radius: 999px;
+    border-radius: 12px;
     padding: 10px 22px;
   }
 
@@ -62,6 +84,7 @@ import logo from '../assets/vigilantlabslogo.png';
     .nav-glass {
       left: 12px;
       right: 12px;
+      border-radius: 18px;
       padding: 0 10px 0 20px;
     }
   }
