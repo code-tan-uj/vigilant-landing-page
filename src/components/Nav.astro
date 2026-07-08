@@ -137,7 +137,9 @@ import logo from '../assets/vigilantlabslogo.png';
 <script>
   import { generateNavDisplacementMap } from '../scripts/liquid-glass';
 
-  function updateNavGlassMap() {
+  let previousObjectUrl: string | null = null;
+
+  async function updateNavGlassMap() {
     const nav = document.getElementById('nav');
     const feImage = document.getElementById('nav-glass-map');
     if (!nav || !feImage) return;
@@ -146,11 +148,17 @@ import logo from '../assets/vigilantlabslogo.png';
     if (rect.width < 1 || rect.height < 1) return;
 
     const isMobile = window.innerWidth <= 900;
-    const url = generateNavDisplacementMap(rect.width, rect.height, {
+    const url = await generateNavDisplacementMap(rect.width, rect.height, {
       edgeBandPx: 11,
       radiusPx: isMobile ? 12 : 14,
     });
+
     feImage.setAttribute('href', url);
+
+    // Object URLs from toBlob() aren't garbage-collected automatically —
+    // release the previous one now that the new map has replaced it.
+    if (previousObjectUrl) URL.revokeObjectURL(previousObjectUrl);
+    previousObjectUrl = url.startsWith('blob:') ? url : null;
   }
 
   updateNavGlassMap();

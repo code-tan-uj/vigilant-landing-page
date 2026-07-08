@@ -10,6 +10,7 @@ const description = 'Get in touch with Vigilant Labs. Request a demo, ask questi
 <BaseLayout title={title} description={description}>
   <Nav />
 
+  <main>
   <section class="contact-section">
     <div class="contact-container">
       <div class="contact-header">
@@ -22,19 +23,19 @@ const description = 'Get in touch with Vigilant Labs. Request a demo, ask questi
 
       <div class="contact-grid reveal reveal-delay-3">
         <div class="contact-card">
-          <h3 class="contact-label">Email</h3>
+          <h2 class="contact-label">Email</h2>
           <a href="mailto:info@vigilantlabs.in" class="contact-link">info@vigilantlabs.in</a>
           <p class="contact-note">Fastest response. PoC setup, licensing, technical questions.</p>
         </div>
 
         <div class="contact-card">
-          <h3 class="contact-label">Phone</h3>
+          <h2 class="contact-label">Phone</h2>
           <a href="tel:+919574332221" class="contact-link">+91 95743 32221</a>
           <p class="contact-note">Call for urgent PoCs or multi-site deployments.</p>
         </div>
 
         <div class="contact-card">
-          <h3 class="contact-label">Location</h3>
+          <h2 class="contact-label">Location</h2>
           <p class="contact-link">Pune, Maharashtra</p>
           <p class="contact-note">India</p>
         </div>
@@ -63,6 +64,7 @@ const description = 'Get in touch with Vigilant Labs. Request a demo, ask questi
       </div>
     </div>
   </section>
+  </main>
 
   <Footer />
 </BaseLayout>

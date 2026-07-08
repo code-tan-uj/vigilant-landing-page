@@ -10,6 +10,7 @@ const description = 'The page you are looking for could not be found.';
 <BaseLayout title={title} description={description}>
   <Nav />
 
+  <main>
   <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 48px', textAlign: 'center' }}>
     <div style={{ maxWidth: '600px' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(120px, 25vw, 280px)', lineHeight: '.9', color: 'var(--border)', letterSpacing: '-.01em', marginBottom: '20px' }}>
@@ -26,6 +27,7 @@ const description = 'The page you are looking for could not be found.';
       </a>
     </div>
   </section>
+  </main>
 
   <Footer />
 </BaseLayout>
