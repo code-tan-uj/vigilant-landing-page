@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { Readable } from 'stream';
+import { markdownToHtml } from '../utils/markdown';
 import fs from 'fs';
 import path from 'path';
 
@@ -13,9 +13,10 @@ const description = 'Comprehensive Privacy Policy for CrowdSense™ platform. Co
 const privacyPath = path.join(process.cwd(), 'src/content/privacy-policy.md');
 let privacyContent = '';
 try {
-  privacyContent = fs.readFileSync(privacyPath, 'utf-8');
+  const rawContent = fs.readFileSync(privacyPath, 'utf-8');
+  privacyContent = markdownToHtml(rawContent);
 } catch (error) {
-  privacyContent = '## Privacy Policy\n\nThe full privacy policy content is being loaded...';
+  privacyContent = '<h2>Privacy Policy</h2><p>The full privacy policy content is being loaded...</p>';
 }
 ---
 
@@ -29,17 +30,7 @@ try {
         <p class="legal-updated reveal reveal-delay-1">Last updated: July 2026 | Compliant with India DPDP Act 2023</p>
       </div>
 
-      <div class="legal-content markdown">
-        <div set:html={privacyContent.split('\n').map((line, i) => {
-          if (line.startsWith('# ')) return `<h1>${line.substring(2)}</h1>`;
-          if (line.startsWith('## ')) return `<h2>${line.substring(3)}</h2>`;
-          if (line.startsWith('### ')) return `<h3>${line.substring(4)}</h3>`;
-          if (line.startsWith('| ')) return `<table><tr>${line.split('|').slice(1, -1).map(cell => `<td>${cell.trim()}</td>`).join('')}</tr></table>`;
-          if (line.startsWith('- ')) return `<li>${line.substring(2)}</li>`;
-          if (line.trim() === '') return '<br/>';
-          return `<p>${line}</p>`;
-        }).join('')} />
-      </div>
+      <div class="legal-content" set:html={privacyContent} />
     </div>
   </section>
 
@@ -73,24 +64,32 @@ try {
   .legal-content {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
+  }
+
+  .legal-content h1 {
+    display: none;
   }
 
   .legal-content h2 {
     font-family: var(--font-display);
     font-size: 28px;
     color: var(--white);
-    margin-top: 40px;
-    margin-bottom: 16px;
+    margin-top: 48px;
+    margin-bottom: 24px;
     letter-spacing: 0.04em;
+  }
+
+  .legal-content h2:first-child {
+    margin-top: 0;
   }
 
   .legal-content h3 {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 18px;
     color: var(--light);
-    margin-top: 24px;
-    margin-bottom: 12px;
+    margin-top: 32px;
+    margin-bottom: 16px;
     letter-spacing: 0.02em;
   }
 
@@ -98,7 +97,6 @@ try {
     font-size: 14px;
     color: var(--muted);
     line-height: 1.8;
-    margin-bottom: 12px;
   }
 
   .legal-content li {
@@ -106,18 +104,22 @@ try {
     color: var(--muted);
     line-height: 1.8;
     margin-left: 20px;
-    margin-bottom: 8px;
+  }
+
+  .legal-content ul {
+    margin: 16px 0;
   }
 
   .legal-content table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 24px 0;
     border: 1px solid var(--border);
+    overflow-x: auto;
   }
 
   .legal-content table td {
-    padding: 12px;
+    padding: 14px;
     border: 1px solid var(--border);
     font-size: 13px;
     color: var(--muted);
@@ -126,7 +128,7 @@ try {
   .legal-content table tr:first-child td {
     background: var(--panel);
     color: var(--white);
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .legal-content a {
@@ -147,19 +149,46 @@ try {
   .legal-content code {
     background: var(--panel);
     color: var(--silver);
-    padding: 2px 6px;
-    border-radius: 3px;
+    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 12px;
+    font-family: var(--font-mono);
+  }
+
+  .legal-content pre {
+    background: var(--panel);
+    color: var(--silver);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+
+  .legal-content pre code {
+    background: none;
+    padding: 0;
   }
 
   @media(max-width:900px){
     .legal-section{
-      padding:80px 24px;
-      margin-top:64px;
+      padding: 80px 24px;
+      margin-top: 64px;
     }
 
     .legal-content h2 {
       font-size: 22px;
+    }
+
+    .legal-content h3 {
+      font-size: 16px;
+    }
+
+    .legal-content table {
+      font-size: 12px;
+    }
+
+    .legal-content table td {
+      padding: 10px;
     }
   }
 </style>

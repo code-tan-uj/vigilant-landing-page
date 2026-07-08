@@ -1,74 +1,32 @@
 ---
-// Floating Chat Bubble Component
-// Features: Questionnaire flow, form submission, elegant UI
+// AI-Powered Chat Widget with Questionnaire Flow
+// Features: Multi-step questionnaire, predefined AI answers, back/forward navigation
 ---
 
 <div id="chat-widget">
-  <!-- Chat Bubble Button -->
   <button id="chat-bubble" class="chat-bubble" title="Chat with us">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
     </svg>
-    <span class="chat-badge">1</span>
   </button>
 
-  <!-- Chat Window -->
   <div id="chat-window" class="chat-window">
-    <!-- Header -->
     <div class="chat-header">
-      <h3>Quick Question?</h3>
-      <button id="chat-close" class="chat-close" aria-label="Close chat">×</button>
+      <h3>Chat with Vigilant Labs</h3>
+      <button id="chat-close" class="chat-close">×</button>
     </div>
 
-    <!-- Chat Content -->
-    <div class="chat-content">
-      <!-- Welcome Message -->
-      <div id="welcome-step" class="chat-step active">
-        <div class="chat-message bot">
-          <p>Hi! 👋 I'm here to help. What brings you here today?</p>
-        </div>
-        <div class="chat-options">
-          <button class="chat-option" data-next="use-case">Interested in a demo</button>
-          <button class="chat-option" data-next="use-case">Have a question</button>
-          <button class="chat-option" data-next="use-case">Report an issue</button>
-        </div>
-      </div>
+    <div class="chat-content" id="chat-content">
+      <!-- Messages rendered here -->
+    </div>
 
-      <!-- Use Case Step -->
-      <div id="use-case-step" class="chat-step">
-        <div class="chat-message bot">
-          <p>Great! What's your primary use case?</p>
-        </div>
-        <div class="chat-options">
-          <button class="chat-option" data-value="manufacturing">Manufacturing & Safety</button>
-          <button class="chat-option" data-value="food">Food & Spice Manufacturing</button>
-          <button class="chat-option" data-value="smart-city">Smart City / Public Safety</button>
-          <button class="chat-option" data-value="logistics">Logistics & Warehousing</button>
-          <button class="chat-option" data-value="other">Other</button>
-        </div>
+    <div class="chat-footer">
+      <div class="chat-nav-buttons">
+        <button id="chat-back" class="chat-nav-btn" style="display:none;">← Back</button>
+        <button id="chat-forward" class="chat-nav-btn" style="display:none;">Next →</button>
       </div>
-
-      <!-- Contact Info Step -->
-      <div id="contact-step" class="chat-step">
-        <div class="chat-message bot">
-          <p>Perfect! Let me connect you with our team.</p>
-        </div>
-        <form id="chat-form" class="chat-form">
-          <input type="text" name="name" placeholder="Your name" required />
-          <input type="email" name="email" placeholder="Email address" required />
-          <input type="tel" name="phone" placeholder="Phone number (+91...)" required />
-          <input type="text" name="company" placeholder="Company name" required />
-          <textarea name="message" placeholder="Brief description of your need..." rows="3"></textarea>
-          <button type="submit" class="chat-submit">Send</button>
-        </form>
-      </div>
-
-      <!-- Success Message -->
-      <div id="success-step" class="chat-step">
-        <div class="chat-message bot">
-          <p>✅ Thanks! Our team will reach out within 2 hours.</p>
-          <p style="font-size: 12px; margin-top: 10px; color: var(--muted);">You'll receive a confirmation at the email provided.</p>
-        </div>
+      <div id="chat-options" class="chat-options">
+        <!-- Options rendered here -->
       </div>
     </div>
   </div>
@@ -80,7 +38,6 @@
     --chat-text: var(--light);
     --chat-border: var(--border);
     --chat-bot: var(--panel);
-    --chat-user: var(--accent);
   }
 
   .chat-bubble {
@@ -90,93 +47,89 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--white);
+    background: linear-gradient(135deg, var(--white) 0%, #f0f0f0 100%);
     color: var(--black);
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 999;
   }
 
   .chat-bubble:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .chat-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background: #e74c3c;
-    color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
+    transform: scale(1.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 
   .chat-window {
     position: fixed;
     bottom: 100px;
     right: 24px;
-    width: 360px;
-    max-height: 600px;
-    background: var(--chat-bg);
-    border: 1px solid var(--chat-border);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: 380px;
+    max-height: 620px;
+    background: rgba(13, 13, 13, 0.7);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
     display: flex;
     flex-direction: column;
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
-    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .chat-window.open {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 
   .chat-header {
-    background: var(--dark);
+    background: linear-gradient(135deg, rgba(245, 245, 245, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
     color: var(--white);
     padding: 16px 20px;
-    border-bottom: 1px solid var(--chat-border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 12px 12px 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   .chat-header h3 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .chat-close {
     background: none;
     border: none;
-    color: var(--white);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 24px;
     cursor: pointer;
     padding: 0;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .chat-close:hover {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
   }
 
   .chat-content {
@@ -185,31 +138,49 @@
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-  }
-
-  .chat-step {
-    display: none;
     gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
 
-  .chat-step.active {
-    display: flex;
-    flex-direction: column;
+  .chat-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .chat-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .chat-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
   }
 
   .chat-message {
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
     line-height: 1.5;
+    animation: messageSlide 0.3s ease-out;
+  }
+
+  @keyframes messageSlide {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .chat-message.bot {
-    background: var(--chat-bot);
-    color: var(--chat-text);
+    background: linear-gradient(135deg, rgba(22, 22, 22, 0.6) 0%, rgba(29, 29, 29, 0.4) 100%);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     align-self: flex-start;
-    max-width: 85%;
+    max-width: 90%;
   }
 
   .chat-message.bot p {
@@ -220,6 +191,46 @@
     margin-top: 8px;
   }
 
+  .chat-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(135deg, rgba(245, 245, 245, 0.02) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 0 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chat-nav-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .chat-nav-btn {
+    background: rgba(200, 200, 200, 0.1);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .chat-nav-btn:hover:not(:disabled) {
+    background: rgba(200, 200, 200, 0.15);
+    color: var(--white);
+    border-color: rgba(200, 200, 200, 0.35);
+  }
+
+  .chat-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
   .chat-options {
     display: flex;
     flex-direction: column;
@@ -227,21 +238,22 @@
   }
 
   .chat-option {
-    background: var(--panel);
-    border: 1px solid var(--chat-border);
-    color: var(--light);
-    padding: 10px 14px;
-    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(245, 245, 245, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 10px 12px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
-    transition: background 0.2s, border-color 0.2s;
+    transition: all 0.2s;
+    font-weight: 500;
   }
 
   .chat-option:hover {
-    background: var(--accent);
-    border-color: var(--silver);
-    color: var(--black);
+    background: linear-gradient(135deg, rgba(200, 200, 200, 0.15) 0%, rgba(200, 200, 200, 0.08) 100%);
+    border-color: rgba(200, 200, 200, 0.3);
+    color: var(--white);
   }
 
   .chat-form {
@@ -252,25 +264,26 @@
 
   .chat-form input,
   .chat-form textarea {
-    background: var(--dark);
-    border: 1px solid var(--chat-border);
+    background: rgba(13, 13, 13, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--light);
     padding: 10px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: 12px;
+    transition: all 0.2s;
   }
 
   .chat-form input::placeholder,
   .chat-form textarea::placeholder {
-    color: var(--muted);
+    color: rgba(255, 255, 255, 0.4);
   }
 
   .chat-form input:focus,
   .chat-form textarea:focus {
     outline: none;
-    border-color: var(--silver);
-    background: var(--panel);
+    border-color: rgba(200, 200, 200, 0.4);
+    background: rgba(22, 22, 22, 0.8);
   }
 
   .chat-submit {
@@ -278,19 +291,20 @@
     color: var(--black);
     border: none;
     padding: 10px 16px;
-    border-radius: 6px;
-    font-weight: 500;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 13px;
-    transition: background 0.2s;
+    font-size: 12px;
+    transition: all 0.2s;
   }
 
   .chat-submit:hover {
     background: var(--silver);
+    transform: translateY(-1px);
   }
 
   .chat-submit:disabled {
-    background: var(--muted);
+    background: rgba(200, 200, 200, 0.4);
     cursor: not-allowed;
   }
 
@@ -304,104 +318,238 @@
 </style>
 
 <script>
-  const chatBubble = document.getElementById('chat-bubble');
-  const chatWindow = document.getElementById('chat-window');
-  const chatClose = document.getElementById('chat-close');
-  const chatForm = document.getElementById('chat-form');
-  const chatOptions = document.querySelectorAll('.chat-option');
+  const QUESTIONNAIRE_FLOW = [
+    {
+      id: "welcome",
+      bot: "Hi there! 👋 I'm here to help you explore how CrowdSense™ can transform your operations. What brings you here today?",
+      options: [
+        { text: "Interested in a demo", next: "usecase" },
+        { text: "Have a technical question", next: "question-type" },
+        { text: "Want to know more about pricing", next: "pricing" },
+        { text: "Report an issue", next: "issue" }
+      ]
+    },
+    {
+      id: "usecase",
+      bot: "Great! What's your primary industry or use case?",
+      options: [
+        { text: "Manufacturing & Safety (PPE, SOP compliance)", next: "manufacturing-detail" },
+        { text: "Food & Spice Manufacturing (FSSAI compliance)", next: "food-detail" },
+        { text: "Smart City / Public Safety", next: "smartcity-detail" },
+        { text: "Logistics & Warehousing", next: "logistics-detail" },
+        { text: "Something else", next: "contact-info" }
+      ]
+    },
+    {
+      id: "manufacturing-detail",
+      bot: "Perfect! Manufacturing is our core expertise. We help detect PPE violations in real-time and track SOP compliance across shifts. Key benefits: 30-87% incident reduction, automated audit-ready reports for Factories Act compliance, and <40 second alert response time. Interested in seeing it in action?",
+      options: [
+        { text: "Yes, schedule a demo", next: "contact-info" },
+        { text: "Tell me about pricing", next: "pricing" },
+        { text: "Back", next: "usecase" }
+      ]
+    },
+    {
+      id: "food-detail",
+      bot: "Excellent! We specialize in food manufacturing. CrowdSense™ helps you meet FSSAI, ISO 22000, and HACCP requirements by monitoring: employee PPE compliance, line hygiene adherence, hazardous area access, and automated compliance reporting. Average deployment: 10 days. Zero new hardware needed.",
+      options: [
+        { text: "Schedule a demo", next: "contact-info" },
+        { text: "What's the cost?", next: "pricing" },
+        { text: "Back", next: "usecase" }
+      ]
+    },
+    {
+      id: "smartcity-detail",
+      bot: "Smart cities trust us for crowd safety, perimeter security, and incident detection. We process 500+ CCTV feeds simultaneously with sub-40-second alert latency. Edge processing = no privacy concerns, enterprise-grade security. Perfect for command centres, mass gatherings, transit hubs.",
+      options: [
+        { text: "Request a pilot", next: "contact-info" },
+        { text: "Tell me more about security", next: "security" },
+        { text: "Back", next: "usecase" }
+      ]
+    },
+    {
+      id: "logistics-detail",
+      bot: "For logistics, we provide: restricted zone monitoring (unauthorized access alerts), vehicle/forklift proximity detection, worker safety tracking, and shift efficiency metrics. Real-time alerts reduce incidents by 40-60%. Works with existing CCTV—zero capex.",
+      options: [
+        { text: "Schedule a demo", next: "contact-info" },
+        { text: "Back", next: "usecase" }
+      ]
+    },
+    {
+      id: "question-type",
+      bot: "What would you like to know more about?",
+      options: [
+        { text: "How does it work technically?", next: "tech-answer" },
+        { text: "Data privacy & compliance", next: "privacy-answer" },
+        { text: "Deployment & integration", next: "deployment-answer" },
+        { text: "Back", next: "welcome" }
+      ]
+    },
+    {
+      id: "tech-answer",
+      bot: "Great question! CrowdSense™ uses edge-first AI: your existing CCTV feeds connect via secure tunnel (no inbound firewall ports). AI models run locally for instant detection, with encrypted backup to our cloud. Result: <40ms latency, zero bandwidth waste, maximum security.",
+      options: [
+        { text: "Tell me about security", next: "security" },
+        { text: "Ready to demo", next: "contact-info" },
+        { text: "Back", next: "question-type" }
+      ]
+    },
+    {
+      id: "privacy-answer",
+      bot: "Privacy is core. We comply with: India's DPDP Act 2023, Factories Act 1948, FSSAI, ISO 22000, GDPR, and CCPA. Video is processed locally (not sent to cloud). We extract only metadata (detections, timestamps, bounding boxes). You own all footage. Retention: 7-30 days per your policy. Zero facial recognition without explicit consent.",
+      options: [
+        { text: "See our privacy policy", next: "policy-link" },
+        { text: "Request a demo", next: "contact-info" },
+        { text: "Back", next: "question-type" }
+      ]
+    },
+    {
+      id: "deployment-answer",
+      bot: "Simple: Edge Gateway (recommended) installs on your LAN in 2-3 hours. No code required. Or Cloud Direct for POCs—connects your RTSP stream directly. Both: live alerts within 10 days, automated reports, WhatsApp/SMS/email notifications.",
+      options: [
+        { text: "Schedule a deployment call", next: "contact-info" },
+        { text: "Back", next: "question-type" }
+      ]
+    },
+    {
+      id: "pricing",
+      bot: "Our pricing is flexible and competitive:\n\n**Starter:** ₹4,999/camera/month (1-10 cameras)\n**Growth:** ₹3,999/camera/month (11-50 cameras)\n**Enterprise:** Custom pricing (50+ cameras)\n\nPlus: One-time Edge Gateway setup (₹49,990). No additional hardware needed—your existing CCTV works.",
+      options: [
+        { text: "Get a custom quote", next: "contact-info" },
+        { text: "Back", next: "welcome" }
+      ]
+    },
+    {
+      id: "security",
+      bot: "Security is built-in:\n• TLS 1.3 encryption in transit\n• AES-256 at rest\n• Edge processing (video never leaves your facility)\n• Secure tunnel (outbound-only, no inbound ports)\n• SOC 2 Type II certified hosting\n• ₹2 crore cyber liability insurance\n\nAll data remains yours—auditable, exportable, deletable anytime.",
+      options: [
+        { text: "See our full security docs", next: "policy-link" },
+        { text: "Request a demo", next: "contact-info" },
+        { text: "Back", next: "question-type" }
+      ]
+    },
+    {
+      id: "issue",
+      bot: "Sorry to hear that! We're here to help. Tell us what's wrong—we'll escalate to our support team immediately.",
+      options: [
+        { text: "Submit details", next: "contact-info" },
+        { text: "Back", next: "welcome" }
+      ]
+    },
+    {
+      id: "policy-link",
+      bot: "Check out our comprehensive legal docs:\n\n📋 **Privacy Policy:** vigilantlabs.in/privacy\n📜 **Terms of Service:** vigilantlabs.in/terms\n\nBoth compliant with India's DPDP Act 2023 and international standards.",
+      options: [
+        { text: "Ready to demo", next: "contact-info" },
+        { text: "Back", next: "welcome" }
+      ]
+    },
+    {
+      id: "contact-info",
+      bot: "Perfect! Let's connect. Fill in your details and our team will reach out within 2 hours.",
+      form: true,
+      options: []
+    },
+    {
+      id: "success",
+      bot: "✅ Thanks! We've got your details. Our team will reach out within 2 hours. In the meantime, check out vigilantlabs.in/demo for an interactive walkthrough.",
+      options: [
+        { text: "Start over", next: "welcome" }
+      ]
+    }
+  ];
 
-  let selectedUseCase = '';
-  let selectedStep = 'welcome-step';
+  let history = ["welcome"];
+  const chatBubble = document.getElementById("chat-bubble");
+  const chatWindow = document.getElementById("chat-window");
+  const chatClose = document.getElementById("chat-close");
+  const chatContent = document.getElementById("chat-content");
+  const chatOptions = document.getElementById("chat-options");
+  const chatBack = document.getElementById("chat-back");
+  const chatForward = document.getElementById("chat-forward");
 
-  // Toggle chat window
-  chatBubble.addEventListener('click', () => {
-    chatWindow.classList.toggle('open');
-  });
+  function renderStep(stepId) {
+    const step = QUESTIONNAIRE_FLOW.find(s => s.id === stepId);
+    if (!step) return;
 
-  chatClose.addEventListener('click', () => {
-    chatWindow.classList.remove('open');
-  });
+    chatContent.innerHTML = "";
+    chatOptions.innerHTML = "";
 
-  // Handle option clicks
-  chatOptions.forEach(option => {
-    option.addEventListener('click', () => {
-      const nextStep = option.dataset.next;
-      const value = option.dataset.value;
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "chat-message bot";
+    msgDiv.innerHTML = `<p>${step.bot.replace(/\n/g, "</p><p>")}</p>`;
+    chatContent.appendChild(msgDiv);
 
-      if (value) {
-        selectedUseCase = value;
-      }
+    if (step.form) {
+      const form = document.createElement("form");
+      form.className = "chat-form";
+      form.innerHTML = `
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="tel" name="phone" placeholder="Phone (+91...)" required />
+        <input type="text" name="company" placeholder="Company" required />
+        <textarea name="message" placeholder="Tell us more..." rows="2"></textarea>
+        <button type="submit" class="chat-submit">Send Details</button>
+      `;
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = {
+          name: form.name.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          company: form.company.value,
+          message: form.message.value,
+          timestamp: new Date().toISOString()
+        };
 
-      // Hide current step
-      document.getElementById(selectedStep)?.classList.remove('active');
-
-      // Show next step
-      selectedStep = nextStep + '-step';
-      document.getElementById(selectedStep)?.classList.add('active');
-
-      // Auto-scroll to bottom
-      setTimeout(() => {
-        document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
-      }, 100);
-    });
-  });
-
-  // Handle form submission
-  chatForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      name: chatForm.name.value,
-      email: chatForm.email.value,
-      phone: chatForm.phone.value,
-      company: chatForm.company.value,
-      useCase: selectedUseCase,
-      message: chatForm.message.value,
-      timestamp: new Date().toISOString(),
-      source: 'chat-widget'
-    };
-
-    try {
-      // Submit to Formspree (free, no backend needed)
-      const response = await fetch('https://formspree.io/f/meokedrq', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          _subject: `New CrowdSense™ Inquiry from ${formData.name}`
-        })
+        try {
+          await fetch("https://formspree.io/f/meokedrq", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...formData, _subject: `New CrowdSense™ Inquiry from ${formData.name}` })
+          });
+          history.push("success");
+          renderStep("success");
+        } catch (error) {
+          alert("Error sending. Try email: info@vigilantlabs.in");
+        }
       });
+      chatOptions.appendChild(form);
+    } else {
+      step.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "chat-option";
+        btn.textContent = opt.text;
+        btn.addEventListener("click", () => {
+          history.push(opt.next);
+          renderStep(opt.next);
+        });
+        chatOptions.appendChild(btn);
+      });
+    }
 
-      if (response.ok) {
-        // Show success message
-        document.getElementById('contact-step').classList.remove('active');
-        selectedStep = 'success-step';
-        document.getElementById('success-step').classList.add('active');
+    chatBack.style.display = history.length > 1 ? "block" : "none";
+    chatForward.style.display = "none";
+    setTimeout(() => {
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }, 100);
+  }
 
-        // Reset form
-        chatForm.reset();
+  chatBubble.addEventListener("click", () => chatWindow.classList.toggle("open"));
+  chatClose.addEventListener("click", () => chatWindow.classList.remove("open"));
 
-        // Auto-close after 3 seconds
-        setTimeout(() => {
-          chatWindow.classList.remove('open');
-          selectedStep = 'welcome-step';
-          document.getElementById('welcome-step').classList.add('active');
-        }, 3000);
-      } else {
-        alert('Error sending message. Please try again or email us directly.');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert('Error sending message. Please try again or email us directly at info@vigilantlabs.in');
+  chatBack.addEventListener("click", () => {
+    if (history.length > 1) {
+      history.pop();
+      renderStep(history[history.length - 1]);
     }
   });
 
-  // Close on outside click
-  document.addEventListener('click', (e) => {
+  renderStep("welcome");
+
+  document.addEventListener("click", (e) => {
     if (!chatWindow.contains(e.target) && !chatBubble.contains(e.target)) {
-      chatWindow.classList.remove('open');
+      chatWindow.classList.remove("open");
     }
   });
 </script>
