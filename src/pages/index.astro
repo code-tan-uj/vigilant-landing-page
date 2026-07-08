@@ -13,9 +13,28 @@ import Footer from '../components/Footer.astro';
 
 const title = 'Vigilant Labs — AI CCTV Analytics India';
 const description = 'Turn your existing CCTV into real-time operational intelligence. Zero new hardware. Live in 10 days. PPE compliance, fire detection, SOP monitoring.';
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CrowdSense™",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered video analytics platform that connects to existing CCTV infrastructure for real-time PPE compliance monitoring, fire and smoke detection, SOP verification, and operational intelligence.",
+  "url": "https://vigilantlabs.in",
+  "author": {
+    "@type": "Organization",
+    "name": "Vigilant Labs"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "India"
+  }
+};
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
   <Nav />
   <main>
     <Hero />
