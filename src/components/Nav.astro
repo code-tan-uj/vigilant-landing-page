@@ -16,21 +16,21 @@ import logo from '../assets/vigilantlabslogo.png';
          (dispersion) — each channel gets its own displacement scale here,
          then they're screen-blended back together so the edges show a
          faint chromatic fringe instead of a flat, uniform blur. -->
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="22" xChannelSelector="R" yChannelSelector="G" result="dispR" />
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="30" xChannelSelector="R" yChannelSelector="G" result="dispR" />
     <feColorMatrix in="dispR" type="matrix"
       values="1 0 0 0 0
               0 0 0 0 0
               0 0 0 0 0
               0 0 0 1 0" result="chR" />
 
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="15" xChannelSelector="R" yChannelSelector="G" result="dispG" />
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="20" xChannelSelector="R" yChannelSelector="G" result="dispG" />
     <feColorMatrix in="dispG" type="matrix"
       values="0 0 0 0 0
               0 1 0 0 0
               0 0 0 0 0
               0 0 0 1 0" result="chG" />
 
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="9" xChannelSelector="R" yChannelSelector="G" result="dispB" />
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="12" xChannelSelector="R" yChannelSelector="G" result="dispB" />
     <feColorMatrix in="dispB" type="matrix"
       values="0 0 0 0 0
               0 0 0 0 0
@@ -43,6 +43,7 @@ import logo from '../assets/vigilantlabslogo.png';
 </svg>
 
 <nav id="nav" class="nav-glass">
+  <div class="nav-glass-edge" aria-hidden="true"></div>
   <a href="/" class="nav-logo">
     <div class="nav-logo-mark">
       <Image src={logo} alt="Vigilant Labs" width={28} height={28} />
@@ -72,33 +73,49 @@ import logo from '../assets/vigilantlabslogo.png';
     border-radius: 14px;
     padding: 0 20px 0 28px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%),
-      rgba(18, 18, 18, 0.5);
-    /* Fallback for browsers without SVG-filter-in-backdrop-filter support
-       (declared first so the cascade keeps it if the enhanced rule below is
-       judged invalid/unsupported). */
+      linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%),
+      rgba(18, 18, 18, 0.22);
+    /* Body of the slab: plain blur only, no distortion, so content read
+       through the middle of the glass stays flat and legible — real glass
+       only bends light where it's thick/angled, i.e. at the bevel, not
+       through its flat face. */
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
     transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
   }
 
-  /* Progressive enhancement: real liquid-glass refraction via SVG
-     feDisplacementMap, bending/distorting whatever scrolls beneath the nav
-     edges instead of just blurring it. */
-  .nav-glass {
-    backdrop-filter: url('#nav-glass-distortion') blur(10px) saturate(190%) brightness(1.06);
+  /* The bevel: a masked frame-shaped layer sitting on top of the body,
+     covering only a band around the perimeter (padding + mask-composite:
+     exclude carves the ring). Its backdrop-filter carries the chromatic
+     displacement, so ONLY this band bends/disperses what's behind the nav —
+     the body underneath stays plain-blurred. That's what makes it read as
+     a glass slab with a refractive edge rather than one uniformly warped
+     surface. */
+  .nav-glass-edge {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 13px;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    -webkit-backdrop-filter: blur(6px) saturate(220%) brightness(1.1);
+    backdrop-filter: blur(6px) saturate(220%) brightness(1.1);
   }
 
-  /* Thin iridescent rim on top of the solid border — a subtle, low-opacity
-     hue sweep around the edge standing in for the way a real lens/prism's
-     edge splits light differently at each point around its curve. Built
-     with the padding + mask-composite:exclude trick so only a 1px ring of
-     the gradient shows, not a filled shape. */
+  .nav-glass-edge {
+    backdrop-filter: url('#nav-glass-distortion') blur(4px) saturate(230%) brightness(1.12);
+  }
+
+  /* Thin iridescent rim drawn on top of the bevel — a subtle, low-opacity
+     hue sweep standing in for the way a lens edge splits light differently
+     at each point around its curve. */
   .nav-glass::after {
     content: '';
     position: absolute;
@@ -106,24 +123,24 @@ import logo from '../assets/vigilantlabslogo.png';
     border-radius: inherit;
     padding: 1px;
     background: conic-gradient(from 180deg at 50% 50%,
-      rgba(255, 120, 120, 0.22) 0deg,
-      rgba(255, 255, 255, 0.04) 55deg,
-      rgba(130, 190, 255, 0.22) 130deg,
-      rgba(255, 255, 255, 0.04) 200deg,
-      rgba(170, 255, 210, 0.18) 280deg,
-      rgba(255, 120, 120, 0.22) 360deg);
+      rgba(255, 120, 120, 0.18) 0deg,
+      rgba(255, 255, 255, 0.03) 55deg,
+      rgba(130, 190, 255, 0.18) 130deg,
+      rgba(255, 255, 255, 0.03) 200deg,
+      rgba(170, 255, 210, 0.14) 280deg,
+      rgba(255, 120, 120, 0.18) 360deg);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
-    opacity: 0.85;
+    opacity: 0.75;
   }
 
   .nav-glass.scrolled {
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%),
-      rgba(12, 12, 12, 0.7);
-    border-color: rgba(255, 255, 255, 0.18);
+      linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 40%),
+      rgba(12, 12, 12, 0.38);
+    border-color: rgba(255, 255, 255, 0.16);
   }
 
   .nav-glass .nav-cta {
